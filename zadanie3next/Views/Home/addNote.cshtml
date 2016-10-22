@@ -1,0 +1,19 @@
+﻿@model zadanie3next.Models.Note
+@{
+    ViewBag.Title = "addNote";
+}
+
+<h2>addNote</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Text, "Текст заметки")
+    <br />
+    @Html.EditorFor(model => model.Text)
+    <br /><br />
+    @Html.LabelFor(model => model.Color, "Цвет")
+    <br />
+    @Html.EditorFor(model => model.Color)
+    <br /><br />
+    <input type="submit" value="Добавить" />
+}

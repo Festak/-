@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<script src="~/js/prefixfree.min.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+<script src="~/js/indexx.js"></script>
+<link rel="stylesheet" href="/css/style.css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <main ng-app="stieckiesApp">
+        <div class="cont" ng-controller="MainController" ng-dblclick="addNote()">
+            <input type="file" id="file" onclick="return false" />
+            <label for="file" class="file__drop" data-image-uploader></label>
+            <div ng-repeat="note in notes">
+                <note ng-if="isUseris(note.UserLogin)" style="top: {{note.Y}}px ; left: {{note.X}}px; background-color: {{note.Color}}; z-index:2; border:1">
+                    <header style="background-color: transparent">
+                        <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 1)" src="~/images/red.png" ng- />
+                        <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 2)" src="~/images/yellow.png" />
+                        <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 3)" src="~/images/pink.png" />
+
+                        <button ng-click="deleteNote(note.Id)" style="">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </header>
+                    <note-content>
+
+                        <textarea ng-model='text' placeholder="{{note.Text}}" ng-mouseup="updateNotePos(note)" ng-mouseenter="text=note.Text" ng-blur="updateNote(note,text)" style="border: 0; background-color: transparent; outline:none; width:170px; height: 200px; overflow: hidden;"></textarea>
+                        @*<input ng-change="getText(text)" style="border:none; background-color:transparent;  outline:none; height: 300px; width: 200px;" type="text" name="text" ng-model="text" maxlength="35"/>*@
+
+                        <br />
+                        @*<img src="~/images/photo.jpeg" class="{{note.ImageType}}" />*@
+                        @*<input type="file" id="file" />
+                  <label for="file" class="file__drop" data-image-uploader></label>
+                  <img data-image class="{{note.ImageType}}" ng-click="loadImage()"/>
+                <span>Filters: </span>
+                 <img ng-click="imagetype(note.Id, 1)" src="~/images/test.jpg" class="sepia" style="width: 40px; height:40px;"/>
+                 <span>|</span>
+                   <img ng-click="imagetype(note.Id, 2)" src="~/images/test.jpg" class="invert" style="width: 40px; height:40px;"/>
+                  <span>|</span>
+                   <img ng-click="imagetype(note.Id, 3)" src="~/images/test.jpg" class="brightness" style="width: 40px; height:40px;" />*@
+                    </note-content>
+
+
+                </note>
+            </div>
+        </div>
+
+
+
+        <style>
+
+            .note{
+                width: 170px;
+  height: 250px;
+            }
+        #file { 
+display: none; 
+} 
+
+.file__drop { 
+z-index:1; 
+position:absolute; 
+display: block; 
+width: 100%; 
+height: 100%; 
+
+}
+            
+        </style>
+
+      
+
+
+        <script>
+
+
+            var focus = 0,
+  blur = 0;
+            $("#ta")
+                .click(function(){alert("asd")});
+
+
+    $('body').on({ 'drop dragover dragenter': dropHandler }, '[data-image-uploader]');
+    $('body').on({ 'change': regularImageUpload }, '#file');
+
+    function regularImageUpload(e) {
+        var file = $(this)[0],
+            type = file.files[0].type.toLocaleLowerCase();
+
+        if (type.match(/jpg/) !== null ||
+           type.match(/jpeg/) !== null ||
+           type.match(/png/) !== null ||
+           type.match(/gif/) !== null) {
+
+            readUploadedImage(file.files[0]);
+        }
+    }
+
+    function dropHandler(e) {
+        e.preventDefault();
+
+        if (e.type === 'drop' && e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files.length) {
+
+            var files = e.originalEvent.dataTransfer.files,
+				type = files[0].type.toLocaleLowerCase();
+
+            if (type.match(/jpg/) !== null ||
+				type.match(/jpeg/) !== null ||
+				type.match(/png/) !== null ||
+				type.match(/gif/) !== null) {
+
+                readUploadedImage(files[0]);
+
+            }
+ alert(getX()+" "+getY());
+        }
+
+        return false;
+    }
+
+
+
+    function readUploadedImage(img) {
+        var reader;
+
+        if (window.FileReader) {
+            reader = new FileReader();
+            reader.readAsDataURL(img);
+
+            reader.onload = function (file) {
+                if (file.target && file.target.result) {
+                    imageLoader(file.target.result, displayImage);
+                }
+
+            };
+
+            reader.onerror = function () {
+                throw new Error('Something went wrong!');
+            };
+
+        } else {
+            throw new Error('FileReader not supported!');
+        }
+
+    }
+
+    function imageLoader(src, callback) {
+        var img;
+
+        img = new Image();
+
+        img.src = src;
+
+        img.onload = function () {
+            imageResizer(img, callback);
+        }
+
+    }
+
+    function imageResizer(img, callback) {
+        var canvas = document.createElement('canvas');
+        canvas.width = 200;
+        canvas.height = 200;
+        context = canvas.getContext('2d');
+        context.drawImage(img, 0, 0, 200, 200);
+
+        callback(canvas.toDataURL());
+
+    }
+
+    function displayImage(img) {
+        $('[data-image]').attr('src', img);
+    }
+
+        </script>
+
+        <script>
+
+
+          
+var cursorX;
+var cursorY;
+document.onmousemove = function (e) {
+cursorX = e.pageX;
+cursorY = e.pageY;
+}
+
+function getUser() {
+    return '@User.Identity.Name';
+}
+
+
+setInterval(checkCursor, 1000);
+function getX() {
+return cursorX;
+}
+function getY() {
+return cursorY;
+}
+        </script>
+    </main>
+

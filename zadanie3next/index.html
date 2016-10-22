@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sticky note AngularJs</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <main ng-app="stieckiesApp">
+        <div class="container" ng-controller="MainController" ng-dblclick="addNote()">
+        
+            <div ng-repeat="note in notes">
+                <note>
+                    <header contenteditable>
+                        {{note.Text}}
+                       
+
+                        <button ng-click="deleteNote($index)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </header>
+                    <note-content>
+                        <article contenteditable>{{note.Color}}</article>
+                    </note-content>
+                </note>
+            </div>
+            </div>
+    </main>
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js'></script>
+    <script src="js/index.js"></script>
+
+
+</body>
+</html>
