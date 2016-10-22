@@ -18,17 +18,17 @@
             <div ng-repeat="note in notes">
                 <note ng-if="isUseris(note.UserLogin)" style="top: {{note.Y}}px ; left: {{note.X}}px; background-color: {{note.Color}}; z-index:2; border:1">
                     <header style="background-color: transparent">
-                        <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 1)" src="~/images/red.png" ng- />
+                        <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 1)" src="~/images/red.png"  />
                         <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 2)" src="~/images/yellow.png" />
                         <img style="width: 5px; height: 5px; border-radius: 50%;" ng-click="color(note.Id, 3)" src="~/images/pink.png" />
-
+                        <div ng-model="circle" id="circle" onmouseover="onCircle=true" onmouseout="onCircle=false"  ng-mouseup="updateNotePos(note)"></div>
                         <button ng-click="deleteNote(note.Id)" style="">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </header>
                     <note-content>
 
-                        <textarea ng-model='text' placeholder="{{note.Text}}" ng-mouseup="updateNotePos(note)" ng-mouseenter="text=note.Text" ng-blur="updateNote(note,text)" style="border: 0; background-color: transparent; outline:none; width:170px; height: 200px; overflow: hidden;"></textarea>
+                        <textarea ng-model='text' placeholder="{{note.Text}}" ng-mouseenter="text=note.Text" ng-blur="updateNote(note,text)" style="border: 0; background-color: transparent; outline:none; width:170px; height: 200px; resize: none"></textarea>
                         @*<input ng-change="getText(text)" style="border:none; background-color:transparent;  outline:none; height: 300px; width: 200px;" type="text" name="text" ng-model="text" maxlength="35"/>*@
 
                         <br />
@@ -76,7 +76,11 @@ height: 100%;
 
 
         <script>
+            var onCircle=false;
 
+            function isOnCircle() {
+                return onCircle;
+            }
 
             var focus = 0,
   blur = 0;
@@ -99,6 +103,8 @@ height: 100%;
             readUploadedImage(file.files[0]);
         }
     }
+
+    
 
     function dropHandler(e) {
         e.preventDefault();

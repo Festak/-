@@ -73,7 +73,7 @@ angular.module('stieckiesApp', [])
       }
 
       $scope.updateNotePos = function (note) {
-          note.X = getX();
+          note.X = getX() - 80;
           note.Y = getY() - 50;
           console.log(note.X);
           console.log(note.Y);
@@ -171,7 +171,7 @@ angular.module('stieckiesApp', [])
 
             var elementLeft, elementTop;
        
-          
+         
    
             element.on('mouseenter', function (event) {
                 onElement = true;
@@ -191,9 +191,7 @@ angular.module('stieckiesApp', [])
             element.on('mouseup', function (event) {
                 pressElement = false;
                 elementLeft = null; elementTop = null;
-           
-
-            
+          
           
 
             });
@@ -201,16 +199,19 @@ angular.module('stieckiesApp', [])
             element.on('mousedown', function (event) {
                 pressElement = true;
                 elementLeft = event.offsetX;
-                elementTop = event.offsetY - 5;
+                elementTop = event.offsetY -8;
              
             });
 
 
             element.on('mousemove', function (event) {
-                if (onElement && pressElement) {
+                if (pressElement && isOnCircle()) {
                     element.css({
-                        'left': event.pageX - elementLeft + "px",
-                        'top': event.pageY - elementTop - 60 + "px"
+                       
+                    });
+                    element.css({
+                        'left': event.pageX - elementLeft - 45+"px",
+                        'top': event.pageY - elementTop - 45 + "px"
                        
                     });
              
@@ -220,5 +221,8 @@ angular.module('stieckiesApp', [])
             }); 
         }
     };
-});
+}
+)
+
+;
 
